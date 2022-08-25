@@ -26,12 +26,12 @@ int main() {
 //    cout << text << endl;
 
     while (true) {
-        // Get value of N
+        // Get value of N which is least 2-gram
         int n = getInteger("Value of N? ", "Please enter a valid integer value. ");
 //        cout << "N is " << n << endl;
         cout << endl;
 
-        // Ask for number of random words to generate
+        // Ask for number of random words to generate which is < ngrams specified
         int numWordsToGen = getInteger("# of random words to generate (0 to quit)? ",
                                        "Please enter a valid integer value. ");
 //        cout << "Random words to generate " << numWordsToGen << endl;
@@ -46,6 +46,11 @@ int main() {
     cout << "Exiting." << endl;
     return 0;
 }
+
+/*
+ * Hints: use "input >> variable" to read file one word at a time
+ */
+
 
 /*
  * Function: getNGRamsMap
@@ -68,6 +73,7 @@ int main() {
  *           {skills., Girls} : {just}}
  */
 
+
 /*
  * Function: getTextFile
  * Usage: Prompts the user to get the reference text by typing the file name. Reprompts the
@@ -79,3 +85,18 @@ void getTextFile(string &text) {
                 "Input file name? ","Unable to open that file. Try again.");
     text = readEntireFile(filename);
     }
+
+/*
+ * Function: getRandomText
+ * Usage:
+ * 1. Pick random key from ngrams map
+ * 2. For subsequent words, use map to look up possible next words (discard first word in your key
+ * and add new suffix for look up)
+ * Prefix and suffix random text with "..."
+ * - To choose a random prefix from a map, use map's 'keys' member function which returns a Vector
+ * containing all of the keys in the map. For randomness in general, include "random.h" and
+ * call the global function randomInteger(min, max)
+ * - Loop over the elements of a vector or set using a for-each loop. A for-each also works on a
+ * map, iterating over the keys in the map. Look up each associated value based on the key in the
+ * loop.
+ */
