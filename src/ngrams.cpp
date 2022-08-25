@@ -5,10 +5,15 @@
 #include "console.h"
 #include "simpio.h"
 #include "filelib.h"
+#include <string>
 using namespace std;
 
 // Function prototypes
 void getTextFile(string &text);
+int getValidInteger(const string &promptMessage,
+                    const string &repromptMessage,
+                    int lowerBound,
+                    int upperBound = INT_MAX);
 
 int main() {
     // Greet the user
@@ -27,13 +32,17 @@ int main() {
 
     while (true) {
         // Get value of N which is least 2-gram
-        int n = getInteger("Value of N? ", "Please enter a valid integer value. ");
+        int n = getValidInteger("Value of N? ",
+                                "Please enter an integer greater than 1",
+                                2);
 //        cout << "N is " << n << endl;
         cout << endl;
 
         // Ask for number of random words to generate which is < ngrams specified
-        int numWordsToGen = getInteger("# of random words to generate (0 to quit)? ",
-                                       "Please enter a valid integer value. ");
+        int numWordsToGen = getValidInteger("# of random words to generate (0 to quit)? ",
+                                            "Please enter an integer greater or equal to " +
+                                            to_string(n),
+                                            n);
 //        cout << "Random words to generate " << numWordsToGen << endl;
         cout << endl;
 
@@ -51,6 +60,37 @@ int main() {
  * Hints: use "input >> variable" to read file one word at a time
  */
 
+/*
+ * Function: getTextFile
+ * Usage: Prompts the user to get the reference text by typing the file name. Reprompts the
+ * user if an invalid file name is given.
+*/
+
+void getTextFile(string &text) {
+    string filename = promptUserForFile(
+                "Input file name? ","Unable to open that file. Try again.");
+    text = readEntireFile(filename);
+    }
+
+/*
+ * Function: getValidInteger
+ * Usage: Ensure user integer input is valid between a range, other reprompt the user to re-enter.
+ * Params: promptMessage (string), lowerBound (integer), upperBound (integer - default INT_MAX)
+ * ------------------------------------------------------------------------------------------------
+ * Returns: userInput (Integer)
+*/
+int getValidInteger(const string &promptMessage,
+                    const string &repromptMessage,
+                    int lowerBound,
+                    int upperBound) {
+    while (true) {
+        int userInput = getInteger(promptMessage);
+        if (userInput >= lowerBound && userInput <= upperBound ) {
+            return userInput;
+        }
+        cout << repromptMessage << endl;
+    }
+}
 
 /*
  * Function: getNGRamsMap
@@ -72,19 +112,6 @@ int main() {
  *           {{just, want} : {to}}, ...
  *           {skills., Girls} : {just}}
  */
-
-
-/*
- * Function: getTextFile
- * Usage: Prompts the user to get the reference text by typing the file name. Reprompts the
- * user if an invalid file name is given.
-*/
-
-void getTextFile(string &text) {
-    string filename = promptUserForFile(
-                "Input file name? ","Unable to open that file. Try again.");
-    text = readEntireFile(filename);
-    }
 
 /*
  * Function: getRandomText
