@@ -48,17 +48,24 @@ int main() {
 }
 
 /*
- * Use Map collection
- *
- * Markov chain
- *
- * Algorithm Step 1: Building a Map of N-Grams
- *
- * for n-gram, wrap around the text n-1 times to get to the end of the passage e.g. 3-gram iterate
- * 2 times
+ * Function: getNGRamsMap
+ * Usage:
+ * 1. Create a window of n-grams as a list of n words
+ * 2. Add the list to a map as a key, and add the following word as the value
+ * 3. Remove the first item in the window and move onto the next n-grams
+ * 4. Repeat until the end of the text, the n-gram will wrap around the text for n-1 words to get to
+ * the end
  * Leave case and punctuation
  *
- *
+ * Example: "Girls just want to have fundamental coding skills." for 2-grams
+ * 1. window = {Girls, just}
+ * 2. map = {{Girls, just} : {want}}
+ * 3. window = {just, want}
+ * 4. map = {{Girls, just} : {want},
+ *           {{just, want} : {to}}
+ * 5. map = {{Girls, just} : {want},
+ *           {{just, want} : {to}}, ...
+ *           {skills., Girls} : {just}}
  */
 
 /*
