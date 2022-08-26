@@ -16,7 +16,6 @@ void getWordTokens(Vector<string> &tokenVec);
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
-                    int upperBound = INT_MAX,
                     bool exitWhen0 = false);
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n);
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
@@ -105,19 +104,22 @@ void getWordTokens(Vector<string> &tokenVec) {
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
-                    int upperBound,
                     bool exitWhen0) {
     while (true) {
         int userInput = getInteger(promptMessage);
-        cout << userInput;
-        if (exitWhen0 && userInput == 0){
-//            cout << userInput;
-            return userInput;
+//        REMOVE AFTER TESTING cout << userInput << endl;
+        if (exitWhen0) {
+            if (userInput == 0){
+//         REMOVE AFTER TESTING       cout << userInput << endl;
+                return userInput;
+            }
         }
-        if (userInput >= lowerBound && userInput <= upperBound ) {
+        if (userInput >= lowerBound) {
+//           REMOVE AFTER TESTING cout << userInput << endl;
             return userInput;
+        } else {
+            cout << repromptMessage << endl;
         }
-        cout << repromptMessage << endl;
     }
 }
 
