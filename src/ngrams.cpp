@@ -16,7 +16,8 @@ void getWordTokens(Vector<string> &tokenVec);
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
-                    int upperBound = INT_MAX);
+                    int upperBound = INT_MAX,
+                    bool exitWhen0 = false);
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n);
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
                    Vector<string> &randomText,
@@ -28,7 +29,7 @@ int main() {
     cout << "Welcome to CS 106B/X Random Writer ('N-Grams')!" << endl;
     cout << "This program generates random text based on a document." << endl;
     cout << "Give me an input file and an 'N' value for groups" << endl;
-    cout << "of words, and I'll create random text for you" << endl;
+    cout << "of words, and I'll create random text for you." << endl;
     cout << endl;
 
     // Instatiate a vector for the word tokens form the text file
@@ -39,30 +40,32 @@ int main() {
     // Ask for input text file from user to create the word tokens
     getWordTokens(tokenVec);
 
-    while (true) {
-        // Get value of N which is least 2-gram
-        int n = getValidInteger("Value of N? ",
-                                "Please enter an integer greater than 1",
-                                2);
-//        cout << "N is " << n << endl;
-        cout << endl;
 
+    // Get value of N which is least 2-gram
+    int n = getValidInteger("Value of N? ",
+                            "Please enter an integer greater than 1",
+                            2);
+//        cout << "N is " << n << endl;
+    cout << endl;
+
+    while (true) {
         // Ask for number of random words to generate which is < ngrams specified
         int numWordsToGen = getValidInteger("# of random words to generate (0 to quit)? ",
                                             "Please enter an integer greater or equal to " +
                                             to_string(n),
-                                            n);
+                                            n,
+                                            true);
 //        cout << "Random words to generate " << numWordsToGen << endl;
-        cout << endl;
 
-         // Quit if user enters 0
+        // Quit if user enters 0
         if (numWordsToGen == 0){
             break;
         }
 
         getNGramsMap(map, tokenVec, n);
-
         getRandomText(map, randomText, n, numWordsToGen);
+        cout << endl;
+
     }
 
     cout << "Exiting." << endl;
@@ -89,7 +92,7 @@ void getWordTokens(Vector<string> &tokenVec) {
     while (scanner.hasMoreTokens()){
         tokenVec.add(scanner.nextToken());
     }
-    cout << tokenVec << endl;
+//   REMOVE AFTER TESTING cout << tokenVec << endl;
 }
 
 /*
@@ -102,9 +105,15 @@ void getWordTokens(Vector<string> &tokenVec) {
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
-                    int upperBound) {
+                    int upperBound,
+                    bool exitWhen0) {
     while (true) {
         int userInput = getInteger(promptMessage);
+        cout << userInput;
+        if (exitWhen0 && userInput == 0){
+//            cout << userInput;
+            return userInput;
+        }
         if (userInput >= lowerBound && userInput <= upperBound ) {
             return userInput;
         }
@@ -149,7 +158,7 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &toke
          // Clear the window to 'slide' across the text
          window.clear();
      }
-     cout << map << endl;
+//     REMOVE AFTER TESTING cout << map << endl;
 }
 
 /*
@@ -194,10 +203,10 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
 //    REMOVE AFTER TESTING cout << randomText << endl;
     string finalText;
     for (string word : randomText){
-        cout << word << endl;
+//        REMOVE AFTER TESTING cout << word << endl;
         finalText += word + " ";
 //        REMOVE AFTER TESTING cout << finalText << endl;
     }
-    cout << "..." << trim(finalText) << "..." << endl;
+    cout << "... " << finalText << "..." << endl;
 }
 
