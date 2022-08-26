@@ -6,14 +6,22 @@
 #include "simpio.h"
 #include "filelib.h"
 #include <string>
+#include "map.h"
+#include "vector.h"
+#include "tokenscanner.h"
 using namespace std;
 
 // Function prototypes
-void getTextFile(string &text);
+//void getTextFile(string &text, Vector<string> &textVec);
+void getTextFile(Vector<string> &lineVec, Vector<string> &wordVec);
+//void getTextFile(string &text, TokenScanner &scanner);
+//void getTextFile(string &text);
+//void getTextFile(Vector<string> &textVec);
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
                     int upperBound = INT_MAX);
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, string &text, int n);
 
 int main() {
     // Greet the user
@@ -23,12 +31,24 @@ int main() {
     cout << "of words, and I'll create random text for you" << endl;
     cout << endl;
 
-    // Instatiate a string for the text file
+    // Instatiate a vector for the text file
     string text;
+//    TokenScanner scanner;
+
+    Vector<string> lineVec;
+    Vector<string> wordVec;
+    Map<Vector<string>, Vector<string>> map;
 
     // Ask for input text file from user
-    getTextFile(text);
+    getTextFile(lineVec, wordVec);
+//    getTextFile(textVec);
 //    cout << text << endl;
+//    cout << scanner << endl;
+//    while (scanner.hasMoreTokens()){
+//        cout << scanner.nextToken() << endl;
+//    }
+    cout << lineVec << endl;
+    cout << wordVec << endl;
 
     while (true) {
         // Get value of N which is least 2-gram
@@ -57,20 +77,39 @@ int main() {
 }
 
 /*
- * Hints: use "input >> variable" to read file one word at a time
- */
-
-/*
  * Function: getTextFile
  * Usage: Prompts the user to get the reference text by typing the file name. Reprompts the
  * user if an invalid file name is given.
 */
 
-void getTextFile(string &text) {
+//void getTextFile(string &text, Vector<string> &textVec) {
+//    string filename = promptUserForFile(
+//                "Input file name? ","Unable to open that file. Try again.");
+//    // Instantiate input file stream to read file contents into a vector of lines
+//    text = readEntireFile(filename);
+//    textVec = stringSplit(text, " ");
+    // Make scanner ignore white spaces
+//    scanner.ignoreWhitespace();
+//    scanner.addWordCharacters("!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
+//    scanner.setInput(text);
+//}
+
+void getTextFile(Vector<string> &lineVec, Vector<string> &wordVec) {
     string filename = promptUserForFile(
                 "Input file name? ","Unable to open that file. Try again.");
-    text = readEntireFile(filename);
+    // Instantiate input file stream to read file contents into a vector of lines
+    ifstream text;
+    openFile(text, filename);
+    readEntireFile(text, lineVec);
+    // Split lines into individual words
+    for (string line : lineVec){
+        Vector<string> tempWords = (stringSplit(line, " "));
+        for (string word : tempWords){
+            // Add individual words into a vector of words only
+            wordVec.add(word);
+        }
     }
+}
 
 /*
  * Function: getValidInteger
@@ -113,6 +152,22 @@ int getValidInteger(const string &promptMessage,
  *           {skills., Girls} : {just}}
  */
 
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &textVec, int n){
+    Vector<string> window;
+    // Create a window of n-grams as a list of n words
+
+    //{"This is a line", "this is a second line"} Read line by line and then string split
+//    for (string line : textVec){
+
+//    }
+
+//    for (int i = 0; i < n; i ++){
+//        string token;
+//        text >> token;
+//        window.add(token);
+//    }
+}
+
 /*
  * Function: getRandomText
  * Usage:
@@ -127,3 +182,6 @@ int getValidInteger(const string &promptMessage,
  * map, iterating over the keys in the map. Look up each associated value based on the key in the
  * loop.
  */
+
+
+
