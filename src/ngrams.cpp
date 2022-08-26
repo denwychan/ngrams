@@ -191,11 +191,12 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         startKey.remove(0);
         startKey.add(randWord);
     }
-    cout << randomText << endl;
+//    REMOVE AFTER TESTING cout << randomText << endl;
     string finalText;
     for (string word : randomText){
-        finalText + word + " ";
-        cout << finalText << endl;
+        cout << word << endl;
+        finalText += word + " ";
+//        REMOVE AFTER TESTING cout << finalText << endl;
     }
     cout << "..." << trim(finalText) << "..." << endl;
 }
