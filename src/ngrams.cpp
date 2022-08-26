@@ -12,12 +12,7 @@
 using namespace std;
 
 // Function prototypes
-//void getTextFile(string &text, Vector<string> &textVec);
 void getWordTokens(Vector<string> &tokenVec);
-//void getTextFile(Vector<string> &lineVec, Vector<string> &wordVec);
-//void getTextFile(string &text, TokenScanner &scanner);
-//void getTextFile(string &text);
-//void getTextFile(Vector<string> &textVec);
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
@@ -32,26 +27,12 @@ int main() {
     cout << "of words, and I'll create random text for you" << endl;
     cout << endl;
 
-    // Instatiate a vector for the text file
-//    string text;
-//    TokenScanner scanner;
-
+    // Instatiate a vector for the word tokens form the text file
     Vector<string> tokenVec;
-    Vector<string> lineVec;
-    Vector<string> wordVec;
     Map<Vector<string>, Vector<string>> map;
 
-    // Ask for input text file from user
+    // Ask for input text file from user to create the word tokens
     getWordTokens(tokenVec);
-//    getTextFile(lineVec, wordVec);
-//    getTextFile(textVec);
-//    cout << text << endl;
-//    cout << scanner << endl;
-//    while (scanner.hasMoreTokens()){
-//        cout << scanner.nextToken() << endl;
-//    }
-//  cout << lineVec << endl;
-//    cout << wordVec << endl;
 
     while (true) {
         // Get value of N which is least 2-gram
@@ -80,9 +61,9 @@ int main() {
 }
 
 /*
- * Function: getTextFile
- * Usage: Prompts the user to get the reference text by typing the file name. Reprompts the
- * user if an invalid file name is given.
+ * Function: getWordTokens
+ * Usage: Prompts the user to get the reference text by typing the file name in order to get the
+ * word tokens from the file. Reprompts the user if an invalid file name is given.
 */
 
 void getWordTokens(Vector<string> &tokenVec) {
@@ -90,6 +71,7 @@ void getWordTokens(Vector<string> &tokenVec) {
                 "Input file name? ","Unable to open that file. Try again.");
     // Instantiate input file stream to read file contents into a vector of lines
     string text = readEntireFile(filename);
+    // Instantiate a token scanner from the text
     TokenScanner scanner(text);
     // Make scanner ignore white spaces and punctuation
     scanner.ignoreWhitespace();
@@ -100,29 +82,6 @@ void getWordTokens(Vector<string> &tokenVec) {
     }
     cout << tokenVec << endl;
 }
-
-//}
-
-//void getTextFile(Vector<string> &lineVec, Vector<string> &wordVec) {
-//    string filename = promptUserForFile(
-//                "Input file name? ","Unable to open that file. Try again.");
-//    // Instantiate input file stream to read file contents into a vector of lines
-//    ifstream text;
-//    openFile(text, filename);
-//    readEntireFile(text, lineVec);
-//    // Split lines into individual words
-//    for (string line : lineVec){
-//        Vector<string> tempWords = (stringSplit(line, " "));
-//        for (string word : tempWords){
-//            // Add individual words into a vector of words after removing white spaces and blank
-//            // lines
-//            word = trim(word);
-//            if (word != ""){
-//                wordVec.add(word);
-//            }
-//        }
-//    }
-//}
 
 /*
  * Function: getValidInteger
