@@ -18,6 +18,10 @@ int getValidInteger(const string &promptMessage,
                     int lowerBound,
                     int upperBound = INT_MAX);
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n);
+void getRandomText(const Map<Vector<string>, Vector<string>> map,
+                   Vector<string> &randomText,
+                   int n,
+                   int numWordsToGen);
 
 int main() {
     // Greet the user
@@ -30,6 +34,7 @@ int main() {
     // Instatiate a vector for the word tokens form the text file
     Vector<string> tokenVec;
     Map<Vector<string>, Vector<string>> map;
+    Vector<string> randomText;
 
     // Ask for input text file from user to create the word tokens
     getWordTokens(tokenVec);
@@ -56,6 +61,8 @@ int main() {
         }
 
         getNGramsMap(map, tokenVec, n);
+
+        getRandomText(map, randomText, n, numWordsToGen);
     }
 
     cout << "Exiting." << endl;
@@ -160,5 +167,36 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &toke
  * loop.
  */
 
-
+void getRandomText(const Map<Vector<string>, Vector<string>> map,
+                   Vector<string> &randomText,
+                   int n,
+                   int numWordsToGen){
+    // Get random start key from ngrams map
+    Vector<Vector<string> > keys = map.keys();
+    int randKeyIndex = randomInteger(0, keys.size() -1);
+    Vector<string> startKey = keys[randKeyIndex];
+    // Add the random start key to the start of the random text
+    for (string key : startKey) {
+        randomText.add(key);
+    }
+    // Continue until the random text corpus reaches the number of random words to generate
+    while (randomText.size() != numWordsToGen){
+        // Get the values corresponding to the start key and select a random word and add it
+        // to the random text generated
+        Vector<string> valueVec = map.get(startKey);
+        int randIndex = randomInteger(0, valueVec.size()-1);
+        string randWord = map.get(startKey)[randIndex];
+        randomText.add(randWord);
+        // Refresh the start by removing the first element and appending the random word
+        startKey.remove(0);
+        startKey.add(randWord);
+    }
+    cout << randomText << endl;
+    string finalText;
+    for (string word : randomText){
+        finalText + word + " ";
+        cout << finalText << endl;
+    }
+    cout << "..." << trim(finalText) << "..." << endl;
+}
 
