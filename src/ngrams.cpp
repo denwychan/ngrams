@@ -17,7 +17,7 @@ int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
                     int upperBound = INT_MAX);
-void getNGramsMap(Map<Vector<string>, Vector<string>> &map, string &text, int n);
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n);
 
 int main() {
     // Greet the user
@@ -54,6 +54,8 @@ int main() {
         if (numWordsToGen == 0){
             break;
         }
+
+        getNGramsMap(map, tokenVec, n);
     }
 
     cout << "Exiting." << endl;
@@ -124,20 +126,23 @@ int getValidInteger(const string &promptMessage,
  *           {skills., Girls} : {just}}
  */
 
-void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &textVec, int n){
-    Vector<string> window;
-    // Create a window of n-grams as a list of n words
-
-    //{"This is a line", "this is a second line"} Read line by line and then string split
-//    for (string line : textVec){
-
-//    }
-
-//    for (int i = 0; i < n; i ++){
-//        string token;
-//        text >> token;
-//        window.add(token);
-//    }
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n){
+     for (int i = 0; i < tokenVec.size(); i++){
+        // Create a window of n-grams and add the first word
+        Vector<string> window(1, tokenVec.get(i));
+        Vector<string> tokenValue;
+        // Add the n-grams remainder to the window
+        for (int j = i + 1; j < i + n; j ++){
+            window.add(tokenVec.get(j % tokenVec.size())); // Use mod for the index so the tokens
+            // can wrap around the text
+        }
+         // Add the window as the key and the suffix as the value to the map
+         tokenValue.add(tokenVec.get((i + n) % tokenVec.size()));
+         map.put(window, tokenValue);
+         // Clear the window to 'slide' across the text
+         window.clear();
+     }
+     cout << map << endl;
 }
 
 /*
