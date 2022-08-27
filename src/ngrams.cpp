@@ -17,7 +17,7 @@ int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
                     bool exitWhen0 = false);
-void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n);
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n);
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
                    Vector<string> &randomText,
                    int n,
@@ -44,8 +44,8 @@ int main() {
     int n = getValidInteger("Value of N? ",
                             "Please enter an integer greater than 1",
                             2);
-//        cout << "N is " << n << endl;
     cout << endl;
+    getNGramsMap(map, tokenVec, n);
 
     while (true) {
         // Ask for number of random words to generate which is < ngrams specified
@@ -54,14 +54,13 @@ int main() {
                                             to_string(n),
                                             n,
                                             true);
-//        cout << "Random words to generate " << numWordsToGen << endl;
 
         // Quit if user enters 0
         if (numWordsToGen == 0){
             break;
         }
 
-        getNGramsMap(map, tokenVec, n);
+//        getNGramsMap(map, tokenVec, n);
         getRandomText(map, randomText, n, numWordsToGen);
         cout << endl;
 
@@ -91,7 +90,8 @@ void getWordTokens(Vector<string> &tokenVec) {
     while (scanner.hasMoreTokens()){
         tokenVec.add(scanner.nextToken());
     }
-//   REMOVE AFTER TESTING cout << tokenVec << endl;
+//   REMOVE AFTER TESTING
+    cout << tokenVec.size() << endl;
 }
 
 /*
@@ -107,15 +107,12 @@ int getValidInteger(const string &promptMessage,
                     bool exitWhen0) {
     while (true) {
         int userInput = getInteger(promptMessage);
-//        REMOVE AFTER TESTING cout << userInput << endl;
         if (exitWhen0) {
             if (userInput == 0){
-//         REMOVE AFTER TESTING       cout << userInput << endl;
                 return userInput;
             }
         }
         if (userInput >= lowerBound) {
-//           REMOVE AFTER TESTING cout << userInput << endl;
             return userInput;
         } else {
             cout << repromptMessage << endl;
@@ -144,7 +141,7 @@ int getValidInteger(const string &promptMessage,
  *           {skills., Girls} : {just}}
  */
 
-void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &tokenVec, int n){
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n){
      for (int i = 0; i < tokenVec.size(); i++){
         // Create a window of n-grams and add the first word
         Vector<string> window(1, tokenVec.get(i));
@@ -160,7 +157,8 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, Vector<string> &toke
          // Clear the window to 'slide' across the text
          window.clear();
      }
-//     REMOVE AFTER TESTING cout << map << endl;
+//     REMOVE AFTER TESTING
+     cout << map << endl;
 }
 
 /*
@@ -202,12 +200,11 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         startKey.remove(0);
         startKey.add(randWord);
     }
-//    REMOVE AFTER TESTING cout << randomText << endl;
+//    REMOVE AFTER TESTING
+//    cout << randomText << endl;
     string finalText;
     for (string word : randomText){
-//        REMOVE AFTER TESTING cout << word << endl;
         finalText += word + " ";
-//        REMOVE AFTER TESTING cout << finalText << endl;
     }
     cout << "... " << finalText << "..." << endl;
 }
