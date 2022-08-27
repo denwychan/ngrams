@@ -1,4 +1,11 @@
-// This is the CPP file you will edit and turn in. (TODO: Remove this comment!)
+/*
+ * Implementation of a random text writer using a reference text and N-grams approach. The user is
+ * prompted to select the reference text, which is then used to build a N-grams maps with N being
+ * the number of consecutive words used as a string to look up the next word. For example,
+ * "Girls just want to have fundamental coding skills." for 4-grams
+ * 1. {{Girls, just, want, to} : {have}, {just, want, to, have} : {fundamental}...}
+ * The user can define N for N-grams and the number of random text to generate
+ */
 
 // Imports
 #include <iostream>
@@ -37,12 +44,9 @@ int main() {
     // Ask for input text file from user to create the word tokens
     getWordTokens(tokenVec);
 
-    // Get value of N which is least 2-gram
-    int n = getValidInteger("Value of N? ",
-                            "N must be 2 or greater",
-                            2);
+    // Get value of N which is least 2-gram to create the Ngrams map
+    int n = getValidInteger("Value of N? ", "N must be 2 or greater", 2);
     cout << endl;
-
     getNGramsMap(map, tokenVec, n);
 
     // Repeatedly ask the user for the number of random words to be generated until they enter 0
@@ -52,7 +56,7 @@ int main() {
                                             "Must be at least " + to_string(n) + " words.",
                                             n,
                                             true);
-        if (numWordsToGen == 0){
+        if (numWordsToGen == 0) {
             break;
         }
         getRandomText(map, n, numWordsToGen);
@@ -67,29 +71,25 @@ int main() {
  * Usage: Prompts the user to get the reference text by typing the file name in order to get the
  * word tokens from the file. Reprompts the user if an invalid file name is given.
 */
-
 void getWordTokens(Vector<string> &tokenVec) {
     string filename = promptUserForFile(
                 "Input file name? ","Unable to open that file. Try again.");
-    // Instantiate input file stream to read file contents into a vector of lines
+    // Read the file into a string and instantiate a token scanner to get tokes from the text
     string text = readEntireFile(filename);
-    // Instantiate a token scanner from the text
     TokenScanner scanner(text);
     // Make scanner ignore white spaces and punctuation
     scanner.ignoreWhitespace();
     scanner.addWordCharacters("!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
-    // Put the tokens into a vector
-    while (scanner.hasMoreTokens()){
+    // Put the tokens into a vector for reading
+    while (scanner.hasMoreTokens()) {
         tokenVec.add(scanner.nextToken());
     }
 }
 
 /*
  * Function: getValidInteger
- * Usage: Ensure user integer input is valid between a range, other reprompt the user to re-enter.
- * Params: promptMessage (string), lowerBound (integer), upperBound (integer - default INT_MAX)
- * ------------------------------------------------------------------------------------------------
- * Returns: userInput (Integer)
+ * Usage: Ensure user integer input is above a lower bound, other reprompt the user to re-enter.
+ * When existWhen0 is set to true, allows the user to exit the function when 0 is entered.
 */
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
@@ -98,7 +98,7 @@ int getValidInteger(const string &promptMessage,
     while (true) {
         int userInput = getInteger(promptMessage);
         if (exitWhen0) {
-            if (userInput == 0){
+            if (userInput == 0) {
                 return userInput;
             }
         }
@@ -112,14 +112,12 @@ int getValidInteger(const string &promptMessage,
 
 /*
  * Function: getNGRamsMap
- * Usage:
+ * Usage:Creates a map of the n-grams of words as the key and the following word as a value
  * 1. Create a window of n-grams as a list of n words
  * 2. Add the list to a map as a key, and add the following word as the value
  * 3. Remove the first item in the window and move onto the next n-grams
  * 4. Repeat until the end of the text, the n-gram will wrap around the text for n-1 words to get to
  * the end
- * Leave case and punctuation
- *
  * Example: "Girls just want to have fundamental coding skills." for 2-grams
  * 1. window = {Girls, just}
  * 2. map = {{Girls, just} : {want}}
@@ -130,14 +128,13 @@ int getValidInteger(const string &promptMessage,
  *           {{just, want} : {to}}, ...
  *           {skills., Girls} : {just}}
  */
-
-void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n){
-     for (int i = 0; i < tokenVec.size(); i++){
+void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n) {
+     for (int i = 0; i < tokenVec.size(); i++) {
         // Create a window of n-grams and add the first word
         Vector<string> window(1, tokenVec.get(i));
         Vector<string> tokenValue;
         // Add the n-grams remainder to the window
-        for (int j = i + 1; j < i + n; j ++){
+        for (int j = i + 1; j < i + n; j ++) {
             window.add(tokenVec.get(j % tokenVec.size())); // Use mod for the index so the tokens
             // can wrap around the text
         }
@@ -147,28 +144,18 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string>
          // Clear the window to 'slide' across the text
          window.clear();
      }
-//     REMOVE AFTER TESTING
-     cout << map << endl;
 }
 
 /*
  * Function: getRandomText
- * Usage:
- * 1. Pick random key from ngrams map
- * 2. For subsequent words, use map to look up possible next words (discard first word in your key
- * and add new suffix for look up)
- * Prefix and suffix random text with "..."
- * - To choose a random prefix from a map, use map's 'keys' member function which returns a Vector
- * containing all of the keys in the map. For randomness in general, include "random.h" and
- * call the global function randomInteger(min, max)
- * - Loop over the elements of a vector or set using a for-each loop. A for-each also works on a
- * map, iterating over the keys in the map. Look up each associated value based on the key in the
- * loop.
+ * Usage: Generate random text based on the number of words specified and the ngrams map generated.
+ * 1. Pick random start key from ngrams map and the associated value to generate the random text
+ * 2. Discard the first word in the start key add the value for the next look up
+ * 2. Continue doing the same for subsequent words until the the whole corpus is generated
  */
-
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
                    int n,
-                   int numWordsToGen){
+                   int numWordsToGen) {
     // Get random start key from ngrams map
     Vector<Vector<string> > keys = map.keys();
     int randKeyIndex = randomInteger(0, keys.size() -1);
@@ -180,7 +167,7 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         randomText.add(key);
     }
     // Continue until the random text corpus reaches the number of random words to generate
-    while (randomText.size() != numWordsToGen){
+    while (randomText.size() != numWordsToGen) {
         // Get the values corresponding to the start key and select a random word and add it
         // to the random text generated
         Vector<string> valueVec = map.get(startKey);
@@ -191,8 +178,9 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         startKey.remove(0);
         startKey.add(randWord);
     }
+    // Display the final random text as string
     string finalText;
-    for (string word : randomText){
+    for (string word : randomText) {
         finalText += word + " ";
     }
     cout << "... " << finalText << "..." << endl;
