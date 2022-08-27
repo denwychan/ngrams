@@ -19,7 +19,6 @@ int getValidInteger(const string &promptMessage,
                     bool exitWhen0 = false);
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n);
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
-//                   Vector<string> &randomText,
                    int n,
                    int numWordsToGen);
 
@@ -31,40 +30,34 @@ int main() {
     cout << "of words, and I'll create random text for you." << endl;
     cout << endl;
 
-    // Instatiate a vector for the word tokens form the text file
+    // Instatiate a vector for the word tokens form the text file and a map for the Ngrams
     Vector<string> tokenVec;
     Map<Vector<string>, Vector<string>> map;
-//    Vector<string> randomText;
 
     // Ask for input text file from user to create the word tokens
     getWordTokens(tokenVec);
-
 
     // Get value of N which is least 2-gram
     int n = getValidInteger("Value of N? ",
                             "N must be 2 or greater",
                             2);
     cout << endl;
+
     getNGramsMap(map, tokenVec, n);
 
+    // Repeatedly ask the user for the number of random words to be generated until they enter 0
+    // to quit
     while (true) {
-        // Ask for number of random words to generate which is < ngrams specified
         int numWordsToGen = getValidInteger("# of random words to generate (0 to quit)? ",
                                             "Must be at least " + to_string(n) + " words.",
                                             n,
                                             true);
-
-        // Quit if user enters 0
         if (numWordsToGen == 0){
             break;
         }
-
-//        getNGramsMap(map, tokenVec, n);
-        getRandomText(map, /*randomText,*/ n, numWordsToGen);
+        getRandomText(map, n, numWordsToGen);
         cout << endl;
-
     }
-
     cout << "Exiting." << endl;
     return 0;
 }
@@ -89,8 +82,6 @@ void getWordTokens(Vector<string> &tokenVec) {
     while (scanner.hasMoreTokens()){
         tokenVec.add(scanner.nextToken());
     }
-//   REMOVE AFTER TESTING
-//    cout << tokenVec.size() << endl;
 }
 
 /*
@@ -157,7 +148,7 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string>
          window.clear();
      }
 //     REMOVE AFTER TESTING
-//     cout << map << endl;
+     cout << map << endl;
 }
 
 /*
@@ -176,7 +167,6 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string>
  */
 
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
-//                   Vector<string> &randomText,
                    int n,
                    int numWordsToGen){
     // Get random start key from ngrams map
@@ -201,12 +191,9 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         startKey.remove(0);
         startKey.add(randWord);
     }
-//    REMOVE AFTER TESTING
-//    cout << randomText.size() << endl;
     string finalText;
     for (string word : randomText){
         finalText += word + " ";
     }
     cout << "... " << finalText << "..." << endl;
 }
-
