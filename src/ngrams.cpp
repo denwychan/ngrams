@@ -42,7 +42,7 @@ int main() {
 
     // Get value of N which is least 2-gram
     int n = getValidInteger("Value of N? ",
-                            "Please enter an integer greater than 1",
+                            "N must be 2 or greater",
                             2);
     cout << endl;
     getNGramsMap(map, tokenVec, n);
@@ -50,8 +50,7 @@ int main() {
     while (true) {
         // Ask for number of random words to generate which is < ngrams specified
         int numWordsToGen = getValidInteger("# of random words to generate (0 to quit)? ",
-                                            "Please enter an integer greater or equal to " +
-                                            to_string(n),
+                                            "Must be at least " + to_string(n) + " words.",
                                             n,
                                             true);
 
@@ -91,7 +90,7 @@ void getWordTokens(Vector<string> &tokenVec) {
         tokenVec.add(scanner.nextToken());
     }
 //   REMOVE AFTER TESTING
-    cout << tokenVec.size() << endl;
+//    cout << tokenVec.size() << endl;
 }
 
 /*
@@ -158,7 +157,7 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string>
          window.clear();
      }
 //     REMOVE AFTER TESTING
-     cout << map << endl;
+//     cout << map << endl;
 }
 
 /*
