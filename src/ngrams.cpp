@@ -19,7 +19,7 @@ int getValidInteger(const string &promptMessage,
                     bool exitWhen0 = false);
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n);
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
-                   Vector<string> &randomText,
+//                   Vector<string> &randomText,
                    int n,
                    int numWordsToGen);
 
@@ -34,7 +34,7 @@ int main() {
     // Instatiate a vector for the word tokens form the text file
     Vector<string> tokenVec;
     Map<Vector<string>, Vector<string>> map;
-    Vector<string> randomText;
+//    Vector<string> randomText;
 
     // Ask for input text file from user to create the word tokens
     getWordTokens(tokenVec);
@@ -61,7 +61,7 @@ int main() {
         }
 
 //        getNGramsMap(map, tokenVec, n);
-        getRandomText(map, randomText, n, numWordsToGen);
+        getRandomText(map, /*randomText,*/ n, numWordsToGen);
         cout << endl;
 
     }
@@ -177,13 +177,15 @@ void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string>
  */
 
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
-                   Vector<string> &randomText,
+//                   Vector<string> &randomText,
                    int n,
                    int numWordsToGen){
     // Get random start key from ngrams map
     Vector<Vector<string> > keys = map.keys();
     int randKeyIndex = randomInteger(0, keys.size() -1);
     Vector<string> startKey = keys[randKeyIndex];
+    // Instantiate a vector to store random text generated
+    Vector<string> randomText;
     // Add the random start key to the start of the random text
     for (string key : startKey) {
         randomText.add(key);
@@ -201,7 +203,7 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         startKey.add(randWord);
     }
 //    REMOVE AFTER TESTING
-//    cout << randomText << endl;
+//    cout << randomText.size() << endl;
     string finalText;
     for (string word : randomText){
         finalText += word + " ";
