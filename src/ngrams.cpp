@@ -115,7 +115,8 @@ int getValidInteger(const string &promptMessage,
 /*
  * Function: getNGramsMap
 
- * Usage:Creates a map of the n-grams of words as the key and the following word as a value
+ * Usage:Creates a map of the n-grams of words as the key and the following words as a value
+
  * 1. Create a window of n-grams as a list of n words
  * 2. Add the list to a map as a key, and add the following word as the value
  * 3. Remove the first item in the window and move onto the next n-grams
