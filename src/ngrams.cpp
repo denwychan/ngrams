@@ -135,7 +135,8 @@ int getValidInteger(const string &promptMessage,
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n) {
      for (int i = 0; i < tokenVec.size(); i++) {
         // Create a window of n-grams and add the first word
-        Vector<string> window(1, tokenVec.get(i));
+        Vector<string> window {tokenVec.get(i)};
+
         Vector<string> tokenValue;
         // Add the n-grams remainder to the window
         for (int j = i + 1; j < i + n; j ++) {
