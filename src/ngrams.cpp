@@ -37,7 +37,8 @@ int main() {
     cout << "of words, and I'll create random text for you." << endl;
     cout << endl;
 
-    // Instatiate a vector for the word tokens form the text file and a map for the Ngrams
+    // Instatiate a vector for the word tokens from the text file and a map for the Ngrams
+
     Vector<string> tokenVec;
     Map<Vector<string>, Vector<string>> map;
 
