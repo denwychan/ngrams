@@ -169,7 +169,8 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
     Vector<string> randomText;
     // Add the random start key to the start of the random text
     for (string key : startKey) {
-        randomText.add(key);
+        randomText += key;
+
     }
     // Continue until the random text corpus reaches the number of random words to generate
     while (randomText.size() != numWordsToGen) {
