@@ -74,7 +74,8 @@ int main() {
 */
 void getWordTokens(Vector<string> &tokenVec) {
     string filename = promptUserForFile(
-                "Input file name? ","Unable to open that file. Try again.");
+                "Input file name? ", "Unable to open that file. Try again.");
+
     // Read the file into a string and instantiate a token scanner to get tokes from the text
     string text = readEntireFile(filename);
     TokenScanner scanner(text);
