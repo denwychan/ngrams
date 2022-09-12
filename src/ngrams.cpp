@@ -178,7 +178,8 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         // to the random text generated
         Vector<string> valueVec = map.get(startKey);
         int randIndex = randomInteger(0, valueVec.size()-1);
-        string randWord = map.get(startKey)[randIndex];
+        string randWord = valueVec[randIndex];
+
         randomText.add(randWord);
         // Refresh the start by removing the first element and appending the random word
         startKey.remove(0);
