@@ -40,8 +40,6 @@ The author of this Random Writer (Ngrams) implementation is very fond of the Pin
 
 The following excerpt has been generated using the Random Writer as an homage to Megan:
 
-> ... in line hoe I be on yo mind though 🐶  you know I'm poppin', you just hatin' cause I'm fine hoe 🐶 eat a 🐓, uh Don't like me then stay off my 💩, uh You need to hold your tongue, uh Unless you gonna lick on my 🐱, ah ah Hey 🐓 as 🍆, everything 'bout me poppin' Got face, I got body You name it, I got it 🐓 as 🍆, [censored] 🍆 your opinion I hustle to get it, I get it (Get it, get it, get it) "Savage" I'm that 🐶 (Yeah) Been that 🐶, still ...
-
-An uncensored version of the output can be found in [output/](https://github.com/denwychan/ngrams/tree/main/output) of this git repo
+`... down on him 'fore I have a [censored] running me Talk yo' 💩, bite your lip Ask for a car while you ride that 🍆  (while you ride that 🍆 ) You ain't never gotta 🍆  him for a thing He already made his mind up 'fore he came Now get your boots and your coat for this wet ass 🐱 Now make it rain if you wanna see some wet ass 🐱 Look, I need a hard hitter, I need a deep stroke I need a Henny drink, I need a weed smoker Not a garden snake, I need a ...`
 
 <img src="readme_images/readme_megan_spotify_cover.jpeg" alt="Megan Thee Stallion photo cover taken from Spotify"/>
