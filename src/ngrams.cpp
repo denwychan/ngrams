@@ -99,10 +99,7 @@ int getValidInteger(const string &promptMessage,
                     bool exitWhenZero) {
     while (true) {
         int userInput = getInteger(promptMessage);
-        if (exitWhenZero && userInput == 0) {
-            return userInput;
-        }
-        if (userInput >= lowerBound) {
+        if ((exitWhenZero && userInput == 0) || userInput >= lowerBound) {
             return userInput;
         } else {
             cout << repromptMessage << endl;
