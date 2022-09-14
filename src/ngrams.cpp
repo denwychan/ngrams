@@ -131,21 +131,20 @@ int getValidInteger(const string &promptMessage,
  *           {skills., Girls} : {just}}
  */
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n) {
-     for (int i = 0; i < tokenVec.size(); i++) {
-        // Create a window of n-grams and add the first word
-        Vector<string> window {tokenVec[i]};
-
-        Vector<string> tokenValue;
-        // Add the n-grams remainder to the window
-        for (int j = i + 1; j < i + n; j ++) {
-            window.add(tokenVec[j % tokenVec.size()]); // Use mod for the index so the tokens
-            // can wrap around the text
-        }
-         // Add the window as the key and the suffix as the value to the map
-         tokenValue.add(tokenVec[(i + n) % tokenVec.size()]);
-         map.put(window, tokenValue);
-         // Clear the window to 'slide' across the text
-         window.clear();
+    // Create the window according to n-grams specified
+    Vector<string> window;
+    for (int i = 0; i < n - 1; i++) {
+        window.add(tokenVec[i % tokenVec.size()]); // Use mod for the index so the tokens
+        // can wrap around the text
+    }
+    // For the entire input corpus
+    for (int i = 0; i < tokenVec.size(); i++) {
+        // Add the window as the key and the suffix as the value to the map
+        string newWord = tokenVec[(i + (n - 1)) % tokenVec.size()];
+        map[window] += newWord;
+        // Adjust the window to 'slide' across the text
+        window += newWord;
+        window.remove(0);
      }
 }
 
@@ -171,17 +170,17 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
 
     }
     // Generate random text corpus according to the number of random words specified
-    for (int i = 0; i < numWordsToGen; i++) {
+    for (int i = 0; i < numWordsToGen - startKey.size(); i++) {
         // Get the values corresponding to the start key and select a random word and add it
         // to the random text generated
         Vector<string> valueVec = map.get(startKey);
         int randIndex = randomInteger(0, valueVec.size()-1);
         string randWord = valueVec[randIndex];
-
         randomText.add(randWord);
+
         // Refresh the start by removing the first element and appending the random word
-        startKey.remove(0);
         startKey.add(randWord);
+        startKey.remove(0);
     }
     // Display the final random text as string
     string finalText;
