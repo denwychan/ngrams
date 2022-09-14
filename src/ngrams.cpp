@@ -63,7 +63,7 @@ int main() {
         getRandomText(map, n, numWordsToGen);
         cout << endl;
     }
-    cout << "Exiting." << endl;
+    cout << "Exiting... Bye Babez!" << endl;
     return 0;
 }
 
