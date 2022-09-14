@@ -133,16 +133,16 @@ int getValidInteger(const string &promptMessage,
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n) {
      for (int i = 0; i < tokenVec.size(); i++) {
         // Create a window of n-grams and add the first word
-        Vector<string> window {tokenVec.get(i)};
+        Vector<string> window {tokenVec[i]};
 
         Vector<string> tokenValue;
         // Add the n-grams remainder to the window
         for (int j = i + 1; j < i + n; j ++) {
-            window.add(tokenVec.get(j % tokenVec.size())); // Use mod for the index so the tokens
+            window.add(tokenVec[j % tokenVec.size()]); // Use mod for the index so the tokens
             // can wrap around the text
         }
          // Add the window as the key and the suffix as the value to the map
-         tokenValue.add(tokenVec.get((i + n) % tokenVec.size()));
+         tokenValue.add(tokenVec[(i + n) % tokenVec.size()]);
          map.put(window, tokenValue);
          // Clear the window to 'slide' across the text
          window.clear();
@@ -170,8 +170,8 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         randomText += key;
 
     }
-    // Continue until the random text corpus reaches the number of random words to generate
-    while (randomText.size() != numWordsToGen) {
+    // Generate random text corpus according to the number of random words specified
+    for (int i = 0; i < numWordsToGen; i++) {
         // Get the values corresponding to the start key and select a random word and add it
         // to the random text generated
         Vector<string> valueVec = map.get(startKey);
