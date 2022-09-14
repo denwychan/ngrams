@@ -37,7 +37,8 @@ int main() {
     cout << "of words, and I'll create random text for you." << endl;
     cout << endl;
 
-    // Instatiate a vector for the word tokens form the text file and a map for the Ngrams
+    // Instatiate a vector for the word tokens from the text file and a map for the Ngrams
+
     Vector<string> tokenVec;
     Map<Vector<string>, Vector<string>> map;
 
@@ -73,7 +74,8 @@ int main() {
 */
 void getWordTokens(Vector<string> &tokenVec) {
     string filename = promptUserForFile(
-                "Input file name? ","Unable to open that file. Try again.");
+                "Input file name? ", "Unable to open that file. Try again.");
+
     // Read the file into a string and instantiate a token scanner to get tokes from the text
     string text = readEntireFile(filename);
     TokenScanner scanner(text);
@@ -109,8 +111,10 @@ int getValidInteger(const string &promptMessage,
 }
 
 /*
- * Function: getNGRamsMap
- * Usage:Creates a map of the n-grams of words as the key and the following word as a value
+ * Function: getNGramsMap
+
+ * Usage:Creates a map of the n-grams of words as the key and the following words as a value
+
  * 1. Create a window of n-grams as a list of n words
  * 2. Add the list to a map as a key, and add the following word as the value
  * 3. Remove the first item in the window and move onto the next n-grams
@@ -129,7 +133,8 @@ int getValidInteger(const string &promptMessage,
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n) {
      for (int i = 0; i < tokenVec.size(); i++) {
         // Create a window of n-grams and add the first word
-        Vector<string> window(1, tokenVec.get(i));
+        Vector<string> window {tokenVec.get(i)};
+
         Vector<string> tokenValue;
         // Add the n-grams remainder to the window
         for (int j = i + 1; j < i + n; j ++) {
@@ -162,7 +167,8 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
     Vector<string> randomText;
     // Add the random start key to the start of the random text
     for (string key : startKey) {
-        randomText.add(key);
+        randomText += key;
+
     }
     // Continue until the random text corpus reaches the number of random words to generate
     while (randomText.size() != numWordsToGen) {
@@ -170,7 +176,8 @@ void getRandomText(const Map<Vector<string>, Vector<string>> map,
         // to the random text generated
         Vector<string> valueVec = map.get(startKey);
         int randIndex = randomInteger(0, valueVec.size()-1);
-        string randWord = map.get(startKey)[randIndex];
+        string randWord = valueVec[randIndex];
+
         randomText.add(randWord);
         // Refresh the start by removing the first element and appending the random word
         startKey.remove(0);
