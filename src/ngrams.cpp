@@ -23,7 +23,7 @@ void getWordTokens(Vector<string> &tokenVec);
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
-                    bool exitWhen0 = false);
+                    bool exitWhenZero = false);
 void getNGramsMap(Map<Vector<string>, Vector<string>> &map, const Vector<string> &tokenVec, int n);
 void getRandomText(const Map<Vector<string>, Vector<string>> map,
                    int n,
@@ -94,13 +94,11 @@ void getWordTokens(Vector<string> &tokenVec) {
 int getValidInteger(const string &promptMessage,
                     const string &repromptMessage,
                     int lowerBound,
-                    bool exitWhen0) {
+                    bool exitWhenZero) {
     while (true) {
         int userInput = getInteger(promptMessage);
-        if (exitWhen0) {
-            if (userInput == 0) {
-                return userInput;
-            }
+        if (exitWhenZero && userInput == 0) {
+            return userInput;
         }
         if (userInput >= lowerBound) {
             return userInput;
